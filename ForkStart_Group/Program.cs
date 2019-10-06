@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 /*
  A project to help student groups learn how to collaborate using github
@@ -21,18 +23,18 @@ namespace ForkStart_Group
         int[] nums = { 1, 3, 5, 6 };
         Console.WriteLine("Position to insert {0} is = {1}\n", target, SearchInsert(nums, target));
 
-        int[] nums1 = { 1, 2, 2, 1 };
-        int[] nums2 = { 2, 2 };
+        int[] nums1 = { 3, 6, 2 };
+        int[] nums2 = { 6, 3, 6, 7, 3};
         int[] intersect = Intersect(nums1, nums2);
         Console.WriteLine("Intersection of two arrays is: ");
         DisplayArray(intersect);
         Console.WriteLine("\n");
 
-        int[] A = { 5, 7, 3, 9, 4, 9, 8, 3, 1 };
+        int[] A = { 5, 7, 3, 9, 4, 9, 8, 3, 1};
         Console.WriteLine("Largest integer occuring once = {0}\n", LargestUniqueNumber(A));
 
         string keyboard = "abcdefghijklmnopqrstuvwxyz";
-        string word = "cba";
+        string word = "leetcode";
         Console.WriteLine("Time taken to type with one finger = {0}\n", CalculateTime(keyboard, word));
 
         int[,] image = { { 1, 1, 0 }, { 1, 0, 1 }, { 0, 0, 0 } };
@@ -104,6 +106,7 @@ namespace ForkStart_Group
                 }
                 else
                 {
+
                         min = mid + 1;
                 }
             }
@@ -119,9 +122,39 @@ namespace ForkStart_Group
 
     public static int[] Intersect(int[] nums1, int[] nums2)
     {
+        Console.WriteLine("Question2: ");
         try
         {
-            // Write your code here
+            int i = 0, j = 0;
+            int n = nums1.Length;
+            int m = nums2.Length;
+
+            // Sort the two arrays
+            Array.Sort(nums1);
+            Array.Sort(nums2);
+
+            while(i<n && j < m)
+            {
+                if(nums1[i] > nums2[j])
+                {
+                    j++;
+                }
+                else
+                {
+                    if (nums2[j] > nums1[i])
+                    {
+                        i++;
+                    }
+                    else
+                    {
+                        // when both are equal
+                        Console.WriteLine(nums1[i] + " ");
+                        i++;
+                        j++;
+                    }
+
+                }
+            }
         }
         catch
         {
@@ -135,7 +168,21 @@ namespace ForkStart_Group
     {
         try
         {
-            // Write your code here
+            Console.WriteLine("Question3:");
+            List<int> listA = new List<int>(A);
+
+            Array.Sort(A);
+            listA.Sort();
+
+            for (int i = A.Length-1; i >0; i--)
+            {
+                if (listA[i - 1] == listA[i]) continue;
+
+                if (listA[i + 1] == listA[i]) continue;
+
+                return listA[i];
+            }
+            return -1;
         }
         catch
         {
@@ -149,7 +196,21 @@ namespace ForkStart_Group
     {
         try
         {
-            // Write your code here
+                Console.WriteLine("Question4: ");
+                Dictionary<int, string> hash = new Dictionary<int, string>(); 
+
+                for(int i = 0; i<keyboard.Length; i++)
+                {
+                    hash.Add(i, keyboard[i].ToString());
+                }
+                var distance = hash.Where(p => p.Value == word[0].ToString()).Select(p =>p.Key).FirstOrDefault();
+                for (int i = 1; i<word.Length; i++)
+                {
+                    int dis_cur = hash.Where(p => p.Value == word[i].ToString()).Select(p => p.Key).FirstOrDefault();
+                    int dis_pre = hash.Where(p => p.Value == word[i - 1].ToString()).Select(p => p.Key).FirstOrDefault();
+                    distance += Math.Abs(dis_cur-dis_pre);
+                }
+                return distance;
         }
         catch
         {
